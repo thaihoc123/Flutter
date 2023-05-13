@@ -146,50 +146,45 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _checkExist(String addNew) {
-    if (addNew.isNotEmpty) {
-      bool isExist = false;
-      for (ToDoDetail todo in todoList) {
-        if (todo.title.toLowerCase() == addNew.toLowerCase()) {
-          isExist = true;
-          break;
-        }
+    bool isExist = false;
+    for (ToDoDetail todo in todoList) {
+      if (todo.title.toLowerCase() == addNew.toLowerCase()) {
+        isExist = true;
+        break;
       }
-      if (isExist) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text(
-                "Seem like the job content is the same!!",
-                style: TextStyle(color: AppColor.red),
-              ),
-              content: const Text("Do you want to continue?"),
-              actions: [
-                TextButton(
-                  child: const Text("Cancel"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                TextButton(
-                  child: const Text("Yes"),
-                  onPressed: () {
-                    _addNew(addNew);
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      } else {
-        _addNew(addNew);
-      }
-      _addnewController.clear();
-    } else {
-      _showAddTextField = false;
-      setState(() {});
     }
+    if (isExist) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              "Seem like the job content is the same!!",
+              style: TextStyle(color: AppColor.red),
+            ),
+            content: const Text("Do you want to continue?"),
+            actions: [
+              TextButton(
+                child: const Text("Cancel"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text("Yes"),
+                onPressed: () {
+                  _addNew(addNew);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      _addNew(addNew);
+    }
+    _addnewController.clear();
   }
 
   @override
@@ -291,8 +286,8 @@ class _HomePageState extends State<HomePage> {
             right: 20,
             child: CustomAddButton(
               onPressed: () {
-                if (_showAddTextField == false) {
-                  _showAddTextField = true;
+                if (_addnewController.text.isEmpty) {
+                  _showAddTextField = !_showAddTextField;
                   setState(() {});
                 } else {
                   _checkExist(_addnewController.text);
